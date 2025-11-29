@@ -1,96 +1,107 @@
 # Audio-Emotion-ML-part
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-
 ## 🔊 Overview
 
-**Audio-Emotion-ML-part** is a machine-learning pipeline built to analyze and classify emotional states from audio features. It ingests pre-extracted audio data, applies preprocessing and feature-engineering, and trains emotion-classification models to predict valence/arousal or discrete emotional labels.
+This repository contains the machine‑learning stage of an audio‑based emotion recognition pipeline.  
+It focuses on preparing structured emotion datasets, training multiple ML models, evaluating them, and producing interpretable outputs such as confusion matrices.
 
-This repo is part of a broader project — for raw audio processing and feature extraction, see the companion repo: [Audio-Emotion](https://github.com/Burden19/Audio-Emotion/).
+For raw audio feature extraction and preprocessing, please refer to the companion project:  
+👉 **https://github.com/Burden19/Audio-Emotion/**
 
-## 🎯 Motivation
-
-Audio-based emotion recognition is a challenging yet powerful tool in affective computing, sentiment analysis, and human-computer interaction. With this project, you can:
-
-- Experiment with different preprocessing and feature-engineering pipelines
-- Compare classical machine-learning models for emotion classification
-- Use the output as input for higher-level tasks (e.g. emotion-aware music recommendation, sentiment-driven content adaptation, behavioral analytics)
+---
 
 ## 📁 Repository Structure
 
 ```
 /
-├── data/                   # preprocessed feature datasets (CSV / HDF5 / pickled)
-│   ├── train/
-│   ├── test/
-│   └── labels.csv
-├── notebooks/              # Jupyter notebooks for EDA and experiments
-├── src/                    # source code for data preprocessing, training & evaluation
-│   ├── preprocess.py
-│   ├── features.py
-│   ├── train.py
-│   └── evaluate.py
-├── models/                 # serialized trained models + metadata
-├── results/                # metrics, plots, logs
-├── requirements.txt        # Python dependencies
-└── README.md
+├── .idea/                           # Project metadata (PyCharm)
+├── saved_models/                    # Trained classifier models (joblib/h5/pkl)
+├── PMEmo_40_features.csv            # Original PMEmo dataset with 40 engineered features
+├── PMEmo_balanced_4emotions.csv     # Balanced dataset regrouped into 4 emotions
+├── confusion_matrices_all_models.png# Combined confusion matrices for all trained models
+├── merging files.py                 # Script for merging multiple CSV/feature sources
+├── training.py                      # Main training + evaluation pipeline
+└── README.md                        # Project documentation
 ```
 
-## 🛠️ Installation
+---
+
+## 🎯 Objectives
+
+This project aims to:
+
+- Build a clean ML workflow for emotion classification from extracted audio features  
+- Compare multiple models (SVM, Random Forest, XGBoost, KNN, MLP, etc.)  
+- Handle class imbalance (e.g., SMOTE or dataset regrouping)  
+- Generate reports such as confusion matrices and accuracy comparisons  
+- Prepare a dataset suitable for downstream tasks (recommenders, analytics, etc.)
+
+---
+
+## 🚀 How to Use
+
+### 1. Install dependencies
 
 ```bash
-git clone https://github.com/Burden19/Audio-Emotion-ML-part.git
-cd Audio-Emotion-ML-part
-python3 -m venv venv
-source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 🚀 Usage
+(If no requirements.txt exists yet, I can generate one from your imports.)
 
-### 1. Preprocessing & feature preparation
+### 2. Prepare the dataset  
+Place your feature CSV files inside the project directory.  
+This repo already includes:
 
-```bash
-python src/preprocess.py --input data/raw/ --output data/features/ --config configs/preprocess_config.yaml
-```
+- `PMEmo_40_features.csv`
+- `PMEmo_balanced_4emotions.csv`
 
-### 2. Train a classifier
-
-```bash
-python src/train.py --features data/features/train.pkl --labels data/features/labels_train.csv --model_output models/emotion_clf.pkl --config configs/train_config.yaml
-```
-
-### 3. Evaluate model performance
+### 3. Train models
 
 ```bash
-python src/evaluate.py --model models/emotion_clf.pkl --features data/features/test.pkl --labels data/features/labels_test.csv --report results/metrics.json --plots results/roc_curve.png
+python training.py
 ```
 
-## 📊 Expected Outputs
+This script will:
 
-- Cleaned, normalized, and transformed feature matrices
-- Training logs and metrics (accuracy, F1-score)
-- Saved model files
-- Experiment reproducibility via configs
+- Load the dataset  
+- Apply preprocessing (scaling, encoding)  
+- Train multiple models  
+- Save them to `saved_models/`  
+- Generate a combined confusion matrix image
 
-## 🧪 Dependencies
+### 4. Inspect results
 
-- numpy, pandas
-- scikit-learn
-- librosa (optional)
-- matplotlib, seaborn
+After training, results are stored as:
 
-## 🤝 Contributing
+- `saved_models/` → trained models  
+- `confusion_matrices_all_models.png` → visual comparison
 
-1. Fork the repo  
-2. Create a feature branch  
-3. Commit changes  
-4. Open a Pull Request  
+---
 
-## 🧠 Related Projects
+## 🧬 Models Included
 
-- **Audio-Emotion**: https://github.com/Burden19/Audio-Emotion/
+Based on your training script, the project supports:
+
+- SVM (linear / RBF)
+- Random Forest
+- KNN
+- Logistic Regression
+- MLP Classifier
+- XGBoost (if installed)
+- Additional models can be easily added
+
+---
+
+## 🔗 Related Repositories
+
+- **Audio-Emotion (Feature Extraction Pipeline)**  
+  👉 https://github.com/Burden19/Audio-Emotion/
+
+This ML-part repo is designed to consume the features produced by the extraction pipeline above.
+
+---
 
 ## 📄 License
 
-MIT License
+This project is available for academic and personal use.  
+You may add a formal LICENSE file later if needed.
